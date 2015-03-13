@@ -1,0 +1,15 @@
+extends ./layout
+
+block content
+    .container
+        .panel.panel-default
+            .panel-heading
+                | Add Show
+            .panel-body
+                form.form(method="post", name="addForm", action="/api/shows")
+                    .form-group
+                        label.control-label Name
+                            input.form-control(type="text", name="showName", placeholder="Enter show name", required, autofocus)
+                            .help-block.text-danger
+                                | Show name is required.
+                    button.btn.btn-primary(type="submit") Add

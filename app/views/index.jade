@@ -1,0 +1,18 @@
+extends ./layout
+
+block content
+    .container
+        .panel.panel-default
+            .panel-heading
+                | Shows
+                .pull-right
+                    input(type="text", placeholder="Search...").search
+            .panel-body
+                .row.show-list
+                    each show in shows
+                        .col-xs-4.col-md-3
+                            a(href="/show/" + show._id)
+                                img(src=show.poster, width="100%").img-rounded
+                            .text-center
+                                a(href="/show/" + show_id) #{show.name}
+                                //- p.text-muted Episodes: #{show.episodes.length}
