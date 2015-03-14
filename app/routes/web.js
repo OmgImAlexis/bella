@@ -16,12 +16,17 @@ module.exports = (function() {
         res.render('add');
     });
 
-
     app.get('/shows', function(req, res) {
         Show.find({}).exec(function(err, shows){
             res.send(shows);
         });
     });
+
+    app.get('/settings/:type', function(req, res) {
+        res.render('settings', {
+            type: req.params.type
+        });
+    })
 
     app.get('/show/:_id', function(req, res) {
         Show.findOne({_id: req.params._id}).exec(function(err, show){

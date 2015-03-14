@@ -35,35 +35,15 @@ block content
         .panel.panel-default
             .panel-heading
                 span.ion-film-marker
-                |  Episodes
+                |  Season
             .panel-body
                 each episode in show.episodes
-                    .episode
-                        h4
-                            | #{episode.episodeName} <small>Season #{episode.season}, Episode #{episode.episodeNumber}</small>
-                        p
-                            span.ion-clock
-                            |  #{episode.firstAired}
-                        p #{episode.overview}
-//-   <div class="alert alert-info" ng-show="nextEpisode">
-//-     The next episode starts {{nextEpisode.firstAired | fromNow}}.
-//-   </div>
-//- 
-//-   <div class="panel panel-default">
-//-     <div class="panel-heading">
-//-       <span class="ion-film-marker"></span> Episodes
-//-     </div>
-//-     <div class="panel-body">
-//-       <div class="episode" ng-repeat="episode in show.episodes">
-//-         <h4>{{episode.episodeName}}
-//-         <small>Season {{episode.season}}, Episode {{episode.episodeNumber}}</small>
-//-         </h4>
-//-         <p>
-//-           <span class="ion-clock"></span>
-//-           {{episode.firstAired | date: 'short'}}
-//-         </p>
-//-         <p>{{episode.overview}}</p>
-//-       </div>
-//-     </div>
-//-   </div>
-//- </div>
+                    p #{episode.season}
+                //- each episode in show.episodes
+                //-     .episode
+                //-         h4
+                //-             | #{episode.episodeName} <small>Season #{episode.season}, Episode #{episode.episodeNumber}</small>
+                //-         p
+                //-             span.ion-clock
+                //-             |  #{episode.firstAired}
+                //-         p #{episode.overview}
