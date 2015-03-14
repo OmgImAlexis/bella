@@ -6,7 +6,8 @@ var express = require('express'),
     session = require('express-session'),
     MongoStore = require('connect-mongo')(session),
     mongoose = require('mongoose'),
-    fs = require('fs');
+    fs = require('fs'),
+    config = require('./config.js').config;
 
 var app = express()
 
@@ -14,7 +15,7 @@ var accessLogStream = fs.createWriteStream(__dirname + '/../access.log', {
     flags: 'a'
 });
 
-mongoose.connect('mongodb://localhost:27017/o', function() {
+mongoose.connect(config.db.uri + ':' + config.db.port + '/' + config.db.database, function() {
     console.error('Connected to MongoDB.');
 });
 mongoose.connection.on('error', function() {
@@ -35,8 +36,8 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 app.use(methodOverride());
 app.use(session({
-    secret: 'keyboard cat',
-    name: 'session',
+    secret: config.session.secret,
+    name: config.session.name,
     store: new MongoStore({mongooseConnection: mongoose.connection}),
     proxy: true,
     resave: true,
@@ -52,6 +53,6 @@ app.get('*', function(req, res) {
     res.render('http/404');
 });
 
-var server = app.listen(3000, function() {
+var server = app.listen(config.app.port, function() {
     console.log('Listening on port %d', server.address().port);
 });

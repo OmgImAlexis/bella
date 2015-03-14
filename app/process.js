@@ -1,8 +1,8 @@
 var fs = require('fs'),
     path = require('path'),
+    crypto = require('crypto'),
     ptn = require('parse-torrent-name');
 
-var showDownloadDirectory = '/Users/omgimalexis/test/downloads/';
 var walk = function(dir, done) {
     var results = [];
     fs.readdir(dir, function(err, list) {
@@ -32,7 +32,7 @@ var walk = function(dir, done) {
     });
 };
 
-walk(showDownloadDirectory, function(err, files){
+walk(downloadPath, function(err, files){
     if (err) console.log(err);
     console.dir(files);
 });

@@ -1,0 +1,14 @@
+{
+    "db": {
+        "uri": "mongodb://localhost",
+        "database": "o",
+        "port": 27017
+    },
+    "session": {
+        "name": "session",
+        "secret": "keyboard cat"
+    },
+    "app": {
+        "port": 3000
+    }
+}
