@@ -1,4 +1,4 @@
-extends ./layout
+extends ../layout
 
 block content
     .container
@@ -6,7 +6,7 @@ block content
             .panel-heading
                 | Add Show
             .panel-body
-                form.form(method="post", name="addForm", action="/api/shows")
+                form.form(method="post", name="addForm")
                     .form-group
                         label.control-label Name
                             input.form-control(type="text", name="showName", placeholder="Enter show name", required, autofocus)

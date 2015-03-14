@@ -1,0 +1,15 @@
+extends ../layout
+
+block content
+    .container
+        .panel.panel-default
+            .panel-heading
+                | Add Movie
+            .panel-body
+                form.form(method="post", name="addForm", action="/movies/add")
+                    .form-group
+                        label.control-label Name
+                            input.form-control(type="text", name="movieName", placeholder="Enter movie name", required, autofocus)
+                            .help-block.text-danger
+                                | Movie name is required.
+                    button.btn.btn-primary(type="submit") Add
