@@ -32,18 +32,20 @@ block content
                             else
                                 span.text-danger Ended
                         p #{show.overview}
-        .panel.panel-default
-            .panel-heading
-                span.ion-film-marker
-                |  Season
-            .panel-body
-                each episode in show.episodes
-                    p #{episode.season}
-                //- each episode in show.episodes
-                //-     .episode
-                //-         h4
-                //-             | #{episode.episodeName} <small>Season #{episode.season}, Episode #{episode.episodeNumber}</small>
-                //-         p
-                //-             span.ion-clock
-                //-             |  #{episode.firstAired}
-                //-         p #{episode.overview}
+        - for(var seasonNumber = Object.keys(show.seasons).length; seasonNumber--;)
+            - season = show.seasons[seasonNumber];
+            if(season ? seasonNumber == 0 ? show.showSpecials ? true : false : true : false)
+                .panel.panel-default
+                    .panel-heading
+                        span.ion-film-marker
+                        |  Season
+                    .panel-body
+                        - for(var k = season.length; k--;)
+                            - episode = season[k]
+                            .episode
+                                h4
+                                    | #{episode.episodeName} <small>Season #{seasonNumber}, Episode #{episode.episodeNumber}</small>
+                                p
+                                    span.ion-clock
+                                    |  #{episode.firstAired}
+                                p #{episode.overview}

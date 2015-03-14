@@ -13,19 +13,29 @@ var showSchema = new mongoose.Schema({
     ratingCount: Number,
     status: String,
     poster: String,
-    seasons: [{
-        number: Number,
-        episodes: [{
-            episodeNumber: Number,
-            episodeName: String,
-            firstAired: Date,
-            overview: String,
-            filePath: String, // Path to downloaded episode.
-            downloadState: String // snatched, downloaded, skipped.
-        }]
-    }],
-    quality: String, // Quality show should be downloaded in. e.g. SD, HDTV(720p, 1080p), WEB-DL, Bluray
-    archiveFirst: Boolean // Should we keep trying to higher quality files or just stop after first snatched.
+    seasons: [],
+    // seasons: [{
+    //     episodes: [{
+    //         episodeNumber: Number,
+    //         episodeName: String,
+    //         firstAired: Date,
+    //         overview: String,
+    //         filePath: String, // Path to downloaded episode.
+    //         downloadState: String // snatched, downloaded, skipped.
+    //     }]
+    // }],
+    showSpecials: {
+        type: Boolean,
+        default: false
+    },
+    quality: {
+        type: String,
+        default: 'HDTV'
+    }, // Quality show should be downloaded in. e.g. SD, HDTV(720p, 1080p), WEB-DL, Bluray
+    archiveFirst: {
+        type: Boolean,
+        default: true
+    } // Should we keep trying to higher quality files or just stop after first snatched.
 });
 
 module.exports = mongoose.model('Show', showSchema);

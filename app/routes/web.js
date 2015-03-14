@@ -1,4 +1,5 @@
 var express = require('express'),
+    _ = require('underscore'),
     Show = require('../models/Show');
 
 module.exports = (function() {
@@ -6,9 +7,21 @@ module.exports = (function() {
 
     app.get('/', function(req, res) {
         Show.find({}).exec(function(err, shows){
-            res.render('index', {
-                shows: shows
+            var finished = _.after(Object.keys(shows).length, doFinish);
+            _.each(shows, function(show){
+                show.episodes = 0;
+                _.each(show.seasons, function(season){
+                    if(season != null) {
+                        show.episodes += Object.keys(season).length;
+                    }
+                });
+                finished();
             });
+            function doFinish(){
+                res.render('index', {
+                    shows: shows
+                });
+            };
         });
     });
 
@@ -34,17 +47,6 @@ module.exports = (function() {
             res.render('show', {
                 show: show
             });
-        //     if (!show) {
-        //         res.send({err: 'Show can\'t be found!'})
-        //     } else {
-        //         Episode.find({show: show._id}).exec(function(err, episodes){
-        //             if (err) console.log(err);
-        //             res.send({
-        //                 show: show,
-        //                 episodes: episodes
-        //             });
-        //         });
-        //     }
         });
     });
     //

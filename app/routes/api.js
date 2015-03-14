@@ -30,6 +30,7 @@ module.exports = (function() {
             });
         },
         function(seriesId, callback) {
+            console.log('http://thetvdb.com/api/' + apiKey + '/series/' + seriesId + '/all/en.xml');
             request.get('http://thetvdb.com/api/' + apiKey + '/series/' + seriesId + '/all/en.xml', function(error, response, body) {
                 if (error) return next(error);
                 parser.parseString(body, function(err, result) {
@@ -49,12 +50,13 @@ module.exports = (function() {
                         runtime: series.runtime,
                         status: series.status,
                         poster: series.poster,
-                        seasons: []
+                        seasons: {}
                     });
-                    _.each(episodes, function(episode) {
-                        show.seasons.push[episode.seasonnumber];
-                        show.seasons[episode.seasonnumber].episodes = [];
-                        show.seasons[episode.seasonnumber].episodes.push({
+                    _.each(episodes, function(episode){
+                        if(!show.seasons[episode.seasonnumber]) {
+                            show.seasons[episode.seasonnumber] = [];
+                        }
+                        show.seasons[episode.seasonnumber].push({
                             episodeNumber: episode.episodenumber,
                             episodeName: episode.episodename,
                             firstAired: episode.firstaired,
