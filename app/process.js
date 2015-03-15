@@ -1,7 +1,8 @@
 var fs = require('fs'),
     path = require('path'),
     crypto = require('crypto'),
-    ptn = require('parse-torrent-name');
+    ptn = require('parse-torrent-name'),
+    Show = require('./models/Show.js');
 
 var walk = function(dir, done) {
     var results = [];
@@ -18,7 +19,7 @@ var walk = function(dir, done) {
                         if (!--pending) done(null, results);
                     });
                 } else {
-                    filePath = file;
+                    var filePath = file;
                     file = file.substring(file.lastIndexOf("/") + 1, file.length);
                     file = file.substr(0, file.lastIndexOf('.')) || file;
                     results.push({
@@ -32,7 +33,4 @@ var walk = function(dir, done) {
     });
 };
 
-walk(downloadPath, function(err, files){
-    if (err) console.log(err);
-    console.dir(files);
-});
+module.exports.walk = walk;

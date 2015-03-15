@@ -14,6 +14,24 @@ var showSchema = new mongoose.Schema({
     status: String,
     poster: String,
     seasons: [],
+    // seasons: [
+    //     {
+    //         episodeNumber: { type: Number, required: true },
+    //         episodeName: { type: String, required: true },
+    //         firstAired: Date,
+    //         overview: String,
+    //         filePath: String, // Path to downloaded episode.
+    //         downloadState: String // snatched, downloaded, skipped.
+    //     }
+    // ],
+    // seasons: [{
+    //     episodeNumber: { type: Number, required: true },
+    //     episodeName: { type: String, required: true },
+    //     firstAired: Date,
+    //     overview: String,
+    //     filePath: String, // Path to downloaded episode.
+    //     downloadState: String // snatched, downloaded, skipped.
+    // }],
     // seasons: [{
     //     episodes: [{
     //         episodeNumber: Number,

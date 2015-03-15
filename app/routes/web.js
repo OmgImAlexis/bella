@@ -91,7 +91,9 @@ module.exports = (function() {
                                 episodeNumber: episode.episodenumber,
                                 episodeName: episode.episodename,
                                 firstAired: episode.firstaired,
-                                overview: episode.overview
+                                overview: episode.overview,
+                                filePath: '', // Path to downloaded episode. If this is blank then the file isn't downloaded.
+                                downloadState: 'paused' // snatched, downloaded, skipped, paused(this is also what we initially set it as).
                             });
                         });
                         callback(err, show);
@@ -122,6 +124,41 @@ module.exports = (function() {
                 }
                 res.redirect('/show/' + show._id);
             });
+        });
+    });
+
+    app.get('/show/process', function(req, res){
+        var walk = require('../process.js').walk;
+        var downloadPath = '/Users/omgimalexis/test/downloads'
+
+        walk(downloadPath, function(err, files){
+            if (err) console.log(err);
+            var matched = [];
+            var unmatched = [];
+            var finished = _.after(files.length, doFinish);
+            files.forEach(function(file){
+                Show.findOne({name: new RegExp(file.details.title, 'i')}, function(err, show){
+                    if(err) console.log(err);
+                    if (show) {
+                        matched.push({
+                            show: {
+                                name: show.name,
+                                episode: show.seasons[file.details.season][file.details.episode-1],
+                                fileExists: show.seasons[file.details.season][file.details.episode-1].filePath === '' ? false : true
+                            }
+                        });
+                     } else {
+                        unmatched.push(file)
+                    }
+                    finished();
+                });
+            });
+            function doFinish(){
+                res.send({
+                    matched: matched,
+                    unmatched: unmatched
+                });
+            };
         });
     });
 
