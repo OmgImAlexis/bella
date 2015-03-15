@@ -1,5 +1,11 @@
 extends ./layout
 
+block head
+    style.
+        .fixed-table-body {
+            height: auto !important;
+        }
+
 block content
     .container
         .panel.panel-default
@@ -40,12 +46,29 @@ block content
                         span.ion-film-marker
                         |  Season #{seasonNumber}
                     .panel-body
-                        - for(var k = season.length; k--;)
-                            - episode = season[k]
-                            .episode
-                                h4
-                                    | #{episode.episodeName} <small>Season #{seasonNumber}, Episode #{episode.episodeNumber}</small>
-                                p
-                                    span.ion-clock
-                                    |  #{episode.firstAired}
-                                p #{episode.overview}
+                        table(data-toggle="table", data-click-to-select="true").table
+                            thead
+                                tr
+                                    th(data-field='selected', data-checkbox='true')
+                                    th(data-field='episode') Episode
+                                    th(data-field='name') Name
+                                    th(data-field='dirdate') Airdate
+                                    th(data-field='status') Status
+                                    th(data-field='search') Search
+                            tbody
+                                - for(var k = season.length; k--;)
+                                    - episode = season[k]
+                                    tr(class=(episode.downloadState === 'downloaded' ? 'success' : (episode.downloadState === 'paused' ? 'info' : 'active')))
+                                        td
+                                        td #{episode.episodeNumber}
+                                        td #{episode.episodeName}
+                                        td #{episode.firstAired}
+                                        td #{episode.downloadState}
+                                        td
+                            //- .episode
+                            //-     h4
+                            //-         | #{episode.episodeName} <small>Season #{seasonNumber}, Episode #{episode.episodeNumber}</small>
+                            //-     p
+                            //-         span.ion-clock
+                            //-         |  #{episode.firstAired}
+                            //-     p #{episode.overview}

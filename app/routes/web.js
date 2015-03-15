@@ -127,7 +127,7 @@ module.exports = (function() {
         });
     });
 
-    app.get('/show/process', function(req, res){
+    app.get('/shows/process', function(req, res){
         var walk = require('../process.js').walk;
         var downloadPath = '/Users/omgimalexis/test/downloads'
 
