@@ -4948,15 +4948,15 @@ em {
     border-radius: 0; }
 
 .search {
-  color: #4f4f4f;
-  font-weight: 300;
-  font-size: 1.5em;
-  padding: 7px;
-  margin-top: -10px;
-  border: 0;
-  background-color: transparent;
-  outline: none;
-  -webkit-appearance: none; }
+    color: #4f4f4f;
+     font-weight: 300;
+     font-size: 1.5em;
+     padding: 7px;
+     border: 0;
+     background-color: transparent;
+     outline: none;
+     -webkit-appearance: none;
+     height: 50px; }
   .search:focus {
     -webkit-transition: all .4s ease;
     transition: all .4s ease; }

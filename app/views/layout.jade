@@ -5,35 +5,19 @@ html
         title="o"
         link(href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css", rel="stylesheet")
         link(href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.6.0/bootstrap-table.min.css", rel="stylesheet")
+        link(href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css", rel="stylesheet")
         link(href="/stylesheets/style.css", rel="stylesheet")
+        link(href="/stylesheets/sidebar.css", rel="stylesheet")
         block head
     body
-        .navbar.navbar-default.navbar-static-top
+        .navbar.navbar-default.navbar-fixed-top
             .navbar-header
                 a(href="/").navbar-brand
                     span.glyphicon.glyphicon-film
-                    | o
+                    |  Media Manager
             ul.nav.navbar-nav
                 li
-                    a(href="/") Home
-                li.dropdown#show-dropdown
-                    a.dropdown-toggle(data-toggle="dropdown", href="#")
-                        | Shows
-                        | 
-                        span.caret
-                    ul.dropdown-menu
-                        li
-                            a(href="/shows/add") Add
-                        li
-                            a(href="/shows/process") Manual Processing
-                li.dropdown#movie-dropdown
-                    a.dropdown-toggle(data-toggle="dropdown", href="#")
-                        | Movies
-                        | 
-                        span.caret
-                    ul.dropdown-menu
-                        li
-                            a(href="/movies/add") Add
+                    input(type="text", placeholder="Search...").search
             ul.nav.navbar-nav.pull-right
                 if(!user)
                     li
@@ -53,7 +37,22 @@ html
                         a(href="/user/" + user._id) #{user.email}
                     li
                         a(href="/signout") Signout
-        block content
+        .container-fluid
+            .row
+                .col-sm-3.col-md-2.sidebar
+                    .nav.nav-sidebar
+                        li.active
+                            a(href="/", data-type="") All media
+                        li
+                            a(href="/shows", data-type="tv-show") Shows
+                        li
+                            a(href="/movies", data-type="movie") Movies
+                        li
+                            a(href='/music', data-type="music") Music
+                .col-sm-9.col-sm-offset-3.col-md-10.col-md-offset-2.main
+                    block content
         script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js")
         script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js")
         script(src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.6.0/bootstrap-table.min.js")
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/2.1.1/isotope.pkgd.min.js")
+        script(src="/js/search.js")

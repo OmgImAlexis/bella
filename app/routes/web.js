@@ -1,5 +1,6 @@
 var express = require('express'),
     Show = require('../models/Show'),
+    Movie = require('../models/Movie'),
     async = require('async'),
     request = require('request'),
     xml2js = require('xml2js'),
@@ -9,10 +10,17 @@ module.exports = (function() {
     var app = express.Router();
 
     app.get('/', function(req, res) {
-        Show.find({}).exec(function(err, shows){
+        var movies, shows;
+        var finished = _.after(2, doFinish);
+        Movie.find({}).exec(function(err, data){
+            movies = data;
+            finished();
+        });
+        Show.find({}).exec(function(err, data){
             if(err) console.log(err);
+            shows = data;
             if (Object.keys(shows).length) {
-                var finished = _.after(Object.keys(shows).length, doFinish);
+                var showsDone = _.after(Object.keys(shows).length, finished);
                 _.each(shows, function(show){
                     show.episodes = 0;
                     _.each(show.seasons, function(season){
@@ -20,17 +28,16 @@ module.exports = (function() {
                             show.episodes += Object.keys(season).length;
                         }
                     });
-                    finished();
+                    showsDone();
                 });
-                function doFinish(){
-                    res.render('index', {
-                        shows: shows
-                    });
-                };
-            } else {
-                res.render('index');
             }
         });
+        function doFinish(){
+            res.render('index', {
+                shows: shows,
+                movies: movies
+            });
+        };
     });
 
     app.get('/shows/add', function(req, res) {
@@ -127,11 +134,55 @@ module.exports = (function() {
         });
     });
 
-    app.get('/shows/process', function(req, res){
-        var walk = require('../process.js').walk;
-        var downloadPath = '/Users/omgimalexis/test/downloads'
+    app.get('/shows/process/', function(req, res){
+        var walk    = require('walk');
+        var probe   = require('node-ffprobe');
+        var dir     = '/Volumes/TV Shows';
+        var files   = [];
 
-        walk(downloadPath, function(err, files){
+        var walker  = walk.walk(dir, { followLinks: false });
+
+        walker.on('file', function(root, stat, next) {
+            var filePath = root + '/' + stat.name;
+            var fileName = root + '/' + stat.name;
+                fileName = (fileName.substr(0, fileName.lastIndexOf('.')) || fileName);
+                fileName = fileName.replace(dir, '');
+                fileName = (fileName[0] == '/') ? fileName.substr(1) : fileName;
+                fileName = fileName.match("(.*)\/S([0-9]{1,2})E([0-9]{1,2}) - (.*)");
+            if(fileName != null) {
+                probe(filePath, function(err, probeData) {
+                    var details = {
+                        season: parseInt(fileName[2]),
+                        episode:  parseInt(fileName[3]),
+                        title: fileName[1],
+                        resolution: probeData.streams[0].height,
+                        quality: probeData.streams[0].height > 720 ? 'HDTV' : 'SD',
+                        codec: probeData.streams[0].codec_name
+                    };
+                });
+                files.push({
+                    filePath: filePath,
+                    details: details
+                });
+            }
+            next();
+        });
+
+        walker.on('end', function() {
+            res.send(files);
+        });
+
+        // walk(showPath, true, function(err, files){
+        //     if (err) console.log(err);
+        //     res.send({ok: 'ok'});
+        // });
+    });
+
+    app.get('/shows/process/downloads', function(req, res){
+        var walk = require('../process.js').walk;
+        var showPath = '/Users/omgimalexis/test/downloads/';
+
+        walk(showPath, false, function(err, files){
             if (err) console.log(err);
             var matched = [];
             var unmatched = [];

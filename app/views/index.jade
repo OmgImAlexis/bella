@@ -1,41 +1,41 @@
 extends ./layout
 
 block content
-    .container
-        .panel.panel-default
-            .panel-heading
-                | Shows
-                .pull-right
-                    input(type="text", placeholder="Search...").search
-            .panel-body
-                .row.show-list
-                    if (shows)
-                        each show in shows
-                            .col-xs-4.col-md-2
-                                a(href="/show/" + show._id)
-                                    img(src=show.poster, width="100%").img-rounded
-                                .text-center
-                                    a(href="/show/" + show._id) #{show.name}
-                                    p.text-muted Episodes: #{show.episodes}
-                    else
-                        .col-md-12
-                            p Once you've added some shows, they'll appear here.
-
-        .panel.panel-default
-            .panel-heading
-                | Movies
-                .pull-right
-                    input(type="text", placeholder="Search...").search
-            .panel-body
-                .row.movie-list
-                    if (movies)
-                        each movie in movies
-                            .col-xs-4.col-md-2
-                                a(href="/movie/" + movie._id)
-                                    img(src=movie.poster, width="100%").img-rounded
-                                .text-center
-                                    a(href="/movie/" + show._id) #{show.name}
-                                    p.text-muted Movie Length: #{movie.length}
-                    else
-                        .col-md-12
-                            p Once you've added some movies, they'll appear here.
+    //- .container
+    //-     .panel.panel-default
+    //-         .panel-heading
+    //-             | Shows
+    //-             .pull-right
+    //-                 input(type="text", placeholder="Search...").search
+    //-         .panel-body
+    .row.show-list
+        if (shows)
+            each show in shows
+                .col-xs-4.col-md-2.media-object.tv-show(data-name=show.name)
+                    a(href="/show/" + show._id)
+                        img(src=show.poster, width="100%").img-rounded
+                    .text-center
+                        a(href="/show/" + show._id) #{show.name}
+                        p.text-muted Episodes: #{show.episodes}
+        //- else
+        //-     .col-md-12
+        //-         p Once you've added some shows, they'll appear here.
+        //- 
+        //- .panel.panel-default
+        //-     .panel-heading
+        //-         | Movies
+        //-         .pull-right
+        //-             input(type="text", placeholder="Search...").search
+        //-     .panel-body
+    .row.movie-list
+        if (movies)
+            each movie in movies
+                .col-xs-4.col-md-2.media-object.movie(data-name=movie.name)
+                    a(href="/movie/" + movie._id)
+                        img(src=movie.poster, width="100%").img-rounded
+                    .text-center
+                        a(href="/movie/" + movie._id) #{movie.name}
+                        p.text-muted Movie Length: #{movie.length}
+        //- else
+        //-     .col-md-12
+        //-         p Once you've added some movies, they'll appear here.

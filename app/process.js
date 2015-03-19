@@ -4,7 +4,7 @@ var fs = require('fs'),
     ptn = require('parse-torrent-name'),
     Show = require('./models/Show.js');
 
-var walk = function(dir, done) {
+var walk = function(dir, processed, done) {
     var results = [];
     fs.readdir(dir, function(err, list) {
         if (err) return done(err);
@@ -20,11 +20,25 @@ var walk = function(dir, done) {
                     });
                 } else {
                     var filePath = file;
-                    file = file.substring(file.lastIndexOf("/") + 1, file.length);
-                    file = file.substr(0, file.lastIndexOf('.')) || file;
+                    if (processed) {
+                        // file = (file.substr(0, file.lastIndexOf('.')) || file);
+                        // file = file.replace(dir, '');
+                        // file = file.match("(.*)\/S([0-9]{1,2})E([0-9]{1,2}) - (.*)");
+                        // var details = {
+                        //     season: file[2],
+                        //     episode:  file[3],
+                        //     title: file[1]
+                        // };
+                        console.log(file);
+                        details = file;
+                    } else {
+                        file = file.substring(file.lastIndexOf("/") + 1, file.length);
+                        file = file.substr(0, file.lastIndexOf('.')) || file;
+                        details = ptn(file);
+                    }
                     results.push({
                         path: filePath,
-                        details: ptn(file)
+                        details: details
                     });
                     if (!--pending) done(null, results);
                 }
