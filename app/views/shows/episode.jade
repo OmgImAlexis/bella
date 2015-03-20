@@ -1,0 +1,13 @@
+extends ../layout
+
+block content
+    .container
+        .panel.panel-default
+            .panel-body
+                .episode
+                   h4
+                       | #{episode.episodeName} <small>Season #{seasonNumber}, Episode #{episode.episodeNumber}</small>
+                   p
+                       span.ion-clock
+                       |  #{episode.firstAired}
+                   p #{episode.overview}

@@ -1,0 +1,15 @@
+extends ../layout
+
+block content
+    .container
+        .panel.panel-default
+            .panel-body
+                - for(i=0;i<season.length;i++)
+                    - episode = season[i];
+                    .episode
+                       h4
+                           | #{episode.episodeName} <small>Season #{seasonNumber}, Episode #{episode.episodeNumber}</small>
+                       p
+                           span.ion-clock
+                           |  #{episode.firstAired}
+                       p #{episode.overview}

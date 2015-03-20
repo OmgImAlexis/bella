@@ -1,0 +1,15 @@
+extends ../layout
+
+block scripts
+    script(src="/js/search.js")
+
+block content
+    .row.shows
+        if (shows)
+            each show in shows
+                .col-xs-4.col-md-2.media-object.tv-show(data-name=show.name)
+                    a(href="/show/" + show._id)
+                        img(src=show.poster, width="100%").img-rounded
+                    .text-center
+                        a(href="/show/" + show._id) #{show.name}
+                        p.text-muted Episodes: #{show.episodes}

@@ -12,11 +12,11 @@ module.exports = (function() {
     app.get('/', function(req, res) {
         var movies, shows;
         var finished = _.after(2, doFinish);
-        Movie.find({}).exec(function(err, data){
+        Movie.find({}).limit(20).exec(function(err, data){
             movies = data;
             finished();
         });
-        Show.find({}).exec(function(err, data){
+        Show.find({}).limit(20).exec(function(err, data){
             if(err) console.log(err);
             shows = data;
             if (Object.keys(shows).length) {
@@ -38,6 +38,59 @@ module.exports = (function() {
                 movies: movies
             });
         };
+    });
+
+    app.get('/show/:_id', function(req, res) {
+        Show.findOne({_id: req.params._id}).exec(function(err, show){
+            if (err) console.log(err);
+            res.render('shows/show', {
+                show: show
+            });
+        });
+    });
+
+    app.get('/show/:_id/:seasonNumber', function(req, res) {
+        Show.findOne({_id: req.params._id}).exec(function(err, show){
+            if (err) console.log(err);
+            res.render('shows/season', {
+                seasonNumber: req.params.seasonNumber,
+                season: show.seasons[req.params.seasonNumber]
+            });
+        });
+    });
+
+    app.get('/show/:_id/:seasonNumber/:episodeNumber', function(req, res) {
+        Show.findOne({_id: req.params._id}).exec(function(err, show){
+            if (err) console.log(err);
+            res.render('shows/episode', {
+                seasonNumber: req.params.season,
+                episode: show.seasons[req.params.seasonNumber][req.params.episodeNumber-1]
+            });
+        });
+    });
+
+    app.get('/shows', function(req, res){
+        Show.find({}).exec(function(err, shows){
+            if(err) console.log(err);
+            if (Object.keys(shows).length) {
+                var showsDone = _.after(Object.keys(shows).length, finished);
+                _.each(shows, function(show){
+                    show.episodes = 0;
+                    _.each(show.seasons, function(season){
+                        if(season != null) {
+                            show.episodes += Object.keys(season).length;
+                        }
+                    });
+                    showsDone();
+                });
+            }
+            function finished(){
+                res.render('shows/index', {
+                    shows: shows
+                });
+            }
+        });
+
     });
 
     app.get('/shows/add', function(req, res) {
@@ -171,11 +224,6 @@ module.exports = (function() {
         walker.on('end', function() {
             res.send(files);
         });
-
-        // walk(showPath, true, function(err, files){
-        //     if (err) console.log(err);
-        //     res.send({ok: 'ok'});
-        // });
     });
 
     app.get('/shows/process/downloads', function(req, res){
@@ -215,15 +263,6 @@ module.exports = (function() {
 
     app.get('/settings/:type', function(req, res) {
         res.render('settings/' + req.params.type);
-    });
-
-    app.get('/show/:_id', function(req, res) {
-        Show.findOne({_id: req.params._id}).exec(function(err, show){
-            if (err) console.log(err);
-            res.render('show', {
-                show: show
-            });
-        });
     });
 
     return app;
