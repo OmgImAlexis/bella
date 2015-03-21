@@ -41,10 +41,10 @@ block content
         - for(seasonNumber=0;seasonNumber<show.seasons.length;seasonNumber++)
             if(seasonNumber == 0 ? show.showSpecials ? true : false : true)
                 .col-xs-4.col-md-2.season
-                    a(href="/show/" + show._id + '/' + seasonNumber)
+                    a(href="/show/" + show.showId + '/' + seasonNumber)
                         img(src=show.poster, width="100%").img-rounded
                     .text-center
-                        a(href="/show/" + show._id + '/' + seasonNumber) Season #{seasonNumber}
+                        a(href="/show/" + show.showId + '/' + seasonNumber) Season #{seasonNumber}
         //-     if(season ? seasonNumber == 0 ? show.showSpecials ? true : false : true : false)
         //-         .panel.panel-default
         //-             .panel-heading

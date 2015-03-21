@@ -47,6 +47,9 @@ app.use(session({
 app.use(express.static(__dirname + '/../public'));
 
 app.use('/', require('./routes/web.js'));
+app.use('/', require('./routes/show.js'));
+app.use('/', require('./routes/movie.js'));
+app.use('/', require('./routes/music.js'));
 app.use('/api/', require('./routes/api.js'));
 
 app.get('*', function(req, res) {

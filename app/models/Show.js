@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 var showSchema = new mongoose.Schema({
-    _id: Number,
+    showId: Number,
     name: String,
     airsDayOfWeek: String,
     airsTime: String,
